@@ -116,10 +116,6 @@
             min-height: auto;
         }
         
-        .task.multiline {
-            align-items: flex-start;
-        }
-        
         .task:hover .delete-btn {
             opacity: 1;
         }
@@ -141,6 +137,7 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            align-self: flex-start;
         }
         
         .delete-btn:hover {
@@ -169,6 +166,7 @@
             width: 18px;
             height: 18px;
             cursor: pointer;
+            flex-shrink: 0;
         }
         
         .task input[type="text"] {
@@ -193,6 +191,7 @@
             color: var(--completed);
             cursor: grab;
             user-select: none;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -276,12 +275,8 @@
 
         function autoResize(textarea) {
             textarea.style.height = '24px'; // Reset to single line height
-            const isMultiline = textarea.scrollHeight > 24;
-            if (isMultiline) {
+            if (textarea.scrollHeight > 24) {
                 textarea.style.height = textarea.scrollHeight + 'px';
-                textarea.parentElement.classList.add('multiline');
-            } else {
-                textarea.parentElement.classList.remove('multiline');
             }
         }
 
