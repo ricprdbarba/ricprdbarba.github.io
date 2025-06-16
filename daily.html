@@ -260,7 +260,17 @@
             if (task) {
                 task.completed = !task.completed;
                 saveTasks();
-                renderTasks();
+                
+                // Update just this task's appearance without re-rendering everything
+                const taskElement = document.querySelector(`[data-id="${id}"]`);
+                if (taskElement) {
+                    if (task.completed) {
+                        taskElement.classList.add('completed');
+                    } else {
+                        taskElement.classList.remove('completed');
+                    }
+                    taskElement.querySelector('input[type="checkbox"]').checked = task.completed;
+                }
             }
         }
 
