@@ -277,7 +277,12 @@
         function deleteTask(id) {
             tasks = tasks.filter(t => t.id !== id);
             saveTasks();
-            renderTasks();
+            
+            // Remove just this task's DOM element without re-rendering everything
+            const taskElement = document.querySelector(`[data-id="${id}"]`);
+            if (taskElement) {
+                taskElement.remove();
+            }
         }
 
         function updateTask(id, text) {
