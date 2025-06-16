@@ -244,15 +244,35 @@
             };
             tasks.push(task);
             saveTasks();
-            renderTasks();
+            
+            // Create and append just the new task element
+            const taskList = document.getElementById('taskList');
+            const li = document.createElement('li');
+            li.className = 'task';
+            li.setAttribute('data-id', task.id);
+            li.draggable = true;
+            
+            li.innerHTML = `
+                <span class="drag-handle">⋮⋮</span>
+                <input type="checkbox" onchange="toggleTask(${task.id})">
+                <textarea placeholder="Enter task..." 
+                       oninput="updateTask(${task.id}, this.value); autoResize(this)"
+                       onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();this.blur()}"
+                       style="flex: 1; border: none; background: transparent; color: inherit; font-family: inherit; font-size: 1rem; outline: none; resize: none; height: 24px; line-height: 1.5; overflow: hidden;"></textarea>
+                <button class="delete-btn" onclick="deleteTask(${task.id})" title="Delete task">🗑️</button>
+            `;
+            
+            // Add drag event listeners
+            li.addEventListener('dragstart', handleDragStart);
+            li.addEventListener('dragover', handleDragOver);
+            li.addEventListener('drop', handleDrop);
+            li.addEventListener('dragend', handleDragEnd);
+            
+            taskList.appendChild(li);
             
             // Focus on the new task input
-            setTimeout(() => {
-                const textareas = document.querySelectorAll('.task textarea');
-                const newTextarea = textareas[textareas.length - 1];
-                newTextarea.focus();
-                // Don't auto-resize new empty textarea - it should start at single line height
-            }, 0);
+            const textarea = li.querySelector('textarea');
+            textarea.focus();
         }
 
         function toggleTask(id) {
